@@ -1,0 +1,58 @@
+<!doctype html>
+<html lang="en">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>SheetSpeed Core — Privacy Policy (Draft)</title>
+<style>
+  :root { color-scheme: light; font: 17px/1.6 Georgia, "Times New Roman", serif; color: #1a2332; background: #f7f4ef; }
+  body { max-width: 720px; margin: 0 auto; padding: 48px 24px 80px; }
+  h1 { font-size: 2rem; line-height: 1.2; margin: 0 0 8px; }
+  h2 { font-size: 1.15rem; margin: 2rem 0 0.6rem; }
+  .meta { color: #5b6b7c; font-family: ui-sans-serif, system-ui, sans-serif; font-size: 0.9rem; }
+  .banner { background: #fff3cd; border: 1px solid #e0c36a; padding: 12px 14px; margin: 20px 0 28px; font-family: ui-sans-serif, system-ui, sans-serif; font-size: 0.92rem; }
+  ul { padding-left: 1.2rem; }
+  li { margin: 0.35rem 0; }
+  a { color: #1456b8; }
+</style>
+<header>
+  <h1>SheetSpeed Core Privacy Policy</h1>
+  <p class="meta">Product: SheetSpeed Core · Published: October 11, 2026</p>
+</header>
+<p class="banner"><strong>Published privacy policy</strong> for the SheetSpeed Core Chrome extension. Contact <a href="mailto:jarvis@agi-jarvis.com">jarvis@agi-jarvis.com</a>.</p>
+
+<p>SheetSpeed Core (“Core”) is a Chrome extension that adds keyboard shortcuts and a command panel to Google Sheets and Google Slides documents you already have open. Core does <em>not</em> use Google API OAuth, does <em>not</em> contact an AI helper, and does <em>not</em> send extension data to SheetSpeed developer servers.</p>
+
+<h2>Data Core accesses</h2>
+<ul>
+  <li><strong>Document context on matching pages.</strong> On Google Sheets and Slides document URLs, Core reads visible formula text, document/tab identifiers, the selected range, and native menu/control metadata needed to run a command you invoke.</li>
+  <li><strong>Keyboard events.</strong> Core inspects key events to match configured shortcuts and to operate its own panel. Local diagnostics may retain the latest modifier event and element/menu metadata for troubleshooting; this is not an analytics upload.</li>
+  <li><strong>Current page URL.</strong> The popup and document handlers read the current document URL only to confirm eligibility and identity. Core does not query Chrome browsing history.</li>
+</ul>
+
+<h2>Storage</h2>
+<ul>
+  <li>Core stores local shortcut overrides, enabled state, and sequence timeout in Chrome extension local storage.</li>
+  <li>If you previously used SheetSpeed Full under the same extension identity, Core preserves existing Full recovery/undo and related records. Core reports counts only and does not restore, prune, delete, or export those records’ cell payloads.</li>
+  <li>Core does not call <code>chrome.storage.sync</code>.</li>
+  <li>Optional settings export, share links (fragment-encoded), and diagnostic downloads happen only when you request them; you control onward sharing.</li>
+</ul>
+
+<h2>Transmission</h2>
+<ul>
+  <li><strong>Developer servers:</strong> none in Core command, settings, or worker execution.</li>
+  <li><strong>Third-party AI:</strong> none.</li>
+  <li><strong>Google:</strong> native commands operate Google’s own editor UI in the open document. Google may save or sync those edits under its own terms; Core does not call the Sheets API.</li>
+</ul>
+
+<h2>Permissions</h2>
+<p>Core requests <code>storage</code> and <code>activeTab</code>, plus content scripts on Google Sheets and Slides document pages. It does not declare identity, OAuth, host API permissions, or native messaging.</p>
+
+<h2>Children</h2>
+<p>Core is not directed at children under 13.</p>
+
+<h2>Changes</h2>
+<p>Material changes to data practices should be reflected in an updated published policy and, where required, Chrome Web Store disclosures.</p>
+
+<h2>Contact</h2>
+<p class="meta">Publisher contact: <a href="mailto:jarvis@agi-jarvis.com">jarvis@agi-jarvis.com</a>.</p>
+</html>
