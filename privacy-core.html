@@ -69,49 +69,58 @@
   </ul>
 </div>
 
-<p>SheetSpeed Core (“Core”) is a Chrome extension that adds keyboard shortcuts and a command panel to Google Sheets and Google Slides documents you already have open. Core does <em>not</em> use Google API OAuth, does <em>not</em> contact an AI helper, and does <em>not</em> send extension data to SheetSpeed developer servers.</p>
+<p><em>Effective October 15, 2026. Operator: Philip Dressler, California, USA.</em></p>
+<p>SheetSpeed is a Chrome extension that adds keyboard shortcuts, formula tracing and modeling tools to Google Sheets and Google Slides. <strong>SheetSpeed Core</strong> (free) works entirely inside the open document. <strong>SheetSpeed Pro</strong> (paid, with a 14-day trial) adds tools that read and write your spreadsheet through the Google Sheets API, but only after you connect your Google account. We do not sell personal data, use it for advertising, or use it to train AI models.</p>
 
-<h2>Data Core accesses</h2>
+<h2>Data SheetSpeed accesses</h2>
 <ul>
-  <li><strong>Document context on matching pages.</strong> On Google Sheets and Slides document URLs, Core reads visible formula text, document/tab identifiers, the selected range, and native menu/control metadata needed to run a command you invoke.</li>
-  <li><strong>Keyboard events.</strong> Core inspects key events to match configured shortcuts and to operate its own panel. Local diagnostics may retain the latest modifier event and element/menu metadata for troubleshooting; this is not an analytics upload.</li>
-  <li><strong>Current page URL.</strong> The popup and document handlers read the current document URL only to confirm eligibility and identity. Core does not query Chrome browsing history.</li>
+  <li><strong>Document context (Core and Pro).</strong> On Google Sheets and Slides document pages, SheetSpeed reads the visible formula text, document and tab identifiers, the selected range, and native menu/control state so it can run the command you choose.</li>
+  <li><strong>Keyboard events.</strong> SheetSpeed checks key presses against your configured shortcuts. It does not log ordinary typing or cell contents. Local diagnostics may keep the latest modifier event and element/menu metadata on your device.</li>
+  <li><strong>Spreadsheet data (Pro, after you connect).</strong> When you run a Pro tool (trace dependents, goal seek, what-if tables, freeze panes, auto-color, color cycles, image export), SheetSpeed calls the Google Sheets API for <em>the spreadsheet you are working in</em> to read the cells, formulas and formatting that tool needs, and, for tools that change the sheet, to write the result you confirm.</li>
+  <li><strong>Account and license (Pro).</strong> Your email address and plan status (trial start, paid or not) through ExtensionPay.</li>
+</ul>
+
+<h2>Google account connection (Pro)</h2>
+<ul>
+  <li>SheetSpeed uses Chrome's <code>identity</code> permission to ask Google for an access token with the scope <code>https://www.googleapis.com/auth/spreadsheets</code>. Google shows you a consent screen first, and nothing is connected unless you approve.</li>
+  <li>The token is managed by Chrome. It is used only from your browser, only to call <code>https://sheets.googleapis.com</code>, and only for the spreadsheet open in your tab. SheetSpeed has no server that receives your token or your spreadsheet data.</li>
+  <li>The app may show Google's “unverified app” notice while Google's verification is pending.</li>
+  <li>You can disconnect from SheetSpeed's panel or Settings at any time, and revoke access at <a href="https://myaccount.google.com/permissions">myaccount.google.com/permissions</a>.</li>
+  <li>SheetSpeed's use of information received from Google APIs follows the <a href="https://developers.google.com/terms/api-services-user-data-policy">Google API Services User Data Policy</a>, including the Limited Use requirements.</li>
 </ul>
 
 <h2>Storage</h2>
 <ul>
-  <li>Core stores local shortcut overrides, enabled state, and sequence timeout in Chrome extension local storage.</li>
-  <li>If you previously used SheetSpeed Full under the same extension identity, Core preserves existing Full recovery/undo and related records. Core reports counts only and does not restore, prune, delete, or export those records’ cell payloads.</li>
-  <li>Core does not call <code>chrome.storage.sync</code>.</li>
-  <li>Optional settings export, share links (fragment-encoded), and diagnostic downloads happen only when you request them; you control onward sharing.</li>
+  <li>Shortcut settings, enabled state and timeouts are stored in Chrome local storage on your device. If you turn on settings sync, they are also stored in Chrome sync storage under your Chrome profile.</li>
+  <li>When a Pro tool changes your sheet, SheetSpeed keeps a local undo record (the original values and formatting of the affected cells) on your device so you can reverse the change. Undo records are bounded in size and you can clear them in Settings.</li>
+  <li>The cached license status (paid / trial / none) is stored locally. ExtensionPay keeps a login token in Chrome storage.</li>
 </ul>
 
-<h2>Transmission</h2>
+<h2>Transmission and processors</h2>
 <ul>
-  <li><strong>Developer servers:</strong> none in Core command, settings, or worker execution.</li>
-  <li><strong>Third-party AI:</strong> none.</li>
-  <li><strong>Google:</strong> native commands operate Google’s own editor UI in the open document. Google may save or sync those edits under its own terms; Core does not call the Sheets API.</li>
+  <li><strong>Google (Pro only):</strong> Sheets API requests go directly from your browser to <code>sheets.googleapis.com</code>.</li>
+  <li><strong>ExtensionPay</strong> (<a href="https://extensionpay.com/privacy">privacy</a>): license and login checks. Your email and plan status are sent, but never your spreadsheet data.</li>
+  <li><strong>Stripe</strong> (<a href="https://stripe.com/privacy">privacy</a>): payment processing, receipts and the subscription portal. Card numbers never reach SheetSpeed or ExtensionPay.</li>
+  <li><strong>Developer servers:</strong> none. <strong>AI providers:</strong> none. The Chrome Web Store version does not include an AI helper.</li>
 </ul>
 
 <h2>Permissions</h2>
-<p>Core requests <code>storage</code> and <code>activeTab</code>, plus content scripts on Google Sheets and Slides document pages. It does not declare identity, OAuth, host API permissions, or native messaging.</p>
+<ul>
+  <li><code>storage</code>: settings, undo records and license cache, as described above.</li>
+  <li><code>activeTab</code>: interact with the Google document you are using when you invoke SheetSpeed.</li>
+  <li><code>identity</code>: get a Google access token, with your consent, for the Pro tools.</li>
+  <li>Host permission <code>https://sheets.googleapis.com/*</code>: call the Google Sheets API for Pro tools.</li>
+  <li>Content scripts on Google Sheets/Slides document pages (shortcuts and panel) and on <code>extensionpay.com</code> (license sign-in and payment confirmation).</li>
+</ul>
 
-<h2 id="payments">SheetSpeed Pro payments</h2>
-<p>This section applies only if you start a Pro trial or buy Pro. Pro builds also connect to <code>extensionpay.com</code> to check your license.</p>
-<h3>What we collect for Pro</h3><ul>
-<li><strong>Email address</strong>: used to create your ExtensionPay account and link your license to your browser.</li>
-<li><strong>Plan status</strong>: trial start date, plan, and whether you have paid. The extension checks this with ExtensionPay.</li></ul>
-<h3>What we never collect</h3><p>Spreadsheet or slide contents, formulas, cell values, or browsing history. Card numbers never reach SheetSpeed or ExtensionPay's servers. Stripe handles them directly.</p>
-<h3>Processors</h3><ul>
-<li><strong>ExtensionPay</strong> (extensionpay.com): license and login service. <a href="https://extensionpay.com/privacy">Privacy policy</a>.</li>
-<li><strong>Stripe</strong>: payment processing, receipts, and the subscription portal. <a href="https://stripe.com/privacy">Privacy policy</a>.</li></ul>
-<h3>Retention and your rights</h3><p>We keep billing records as long as tax law requires. You can ask us to access or delete your account data by emailing <a href="mailto:jarvis@agi-jarvis.com">jarvis@agi-jarvis.com</a>. We do not sell personal data.</p>
+<h2>Retention and your rights</h2>
+<p>Local data stays on your device until you clear it or uninstall SheetSpeed. Billing records are kept as long as tax law requires. To access or delete your account data, email us. California residents and others may have additional rights under applicable law; we honor verified requests.</p>
 
 <h2>Children</h2>
-<p>Core is not directed at children under 13.</p>
+<p>SheetSpeed is not directed at children under 13.</p>
 
 <h2>Changes</h2>
-<p>Material changes to data practices should be reflected in an updated published policy and, where required, Chrome Web Store disclosures.</p>
+<p>We will post changes on this page and update the effective date. Material changes will also be reflected in Chrome Web Store disclosures.</p>
 
 <h2>Contact</h2>
 <p class="meta">Publisher contact: <a href="mailto:jarvis@agi-jarvis.com">jarvis@agi-jarvis.com</a> · Hub: <a href="index.html">SheetSpeed privacy &amp; official links</a> · <a href="support.html">Support</a></p>
