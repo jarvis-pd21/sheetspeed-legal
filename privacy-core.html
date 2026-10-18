@@ -70,7 +70,8 @@
 </div>
 
 <p><em>Effective October 15, 2026. Operator: Philip Dressler, California, USA.</em></p>
-<p>SheetSpeed is a Chrome extension that adds keyboard shortcuts, formula tracing and modeling tools to Google Sheets and Google Slides. <strong>SheetSpeed Core</strong> (free) works entirely inside the open document. <strong>SheetSpeed Pro</strong> (paid, with a 14-day trial) adds tools that read and write your spreadsheet through the Google Sheets API, but only after you connect your Google account. We do not sell personal data, use it for advertising, or use it to train AI models.</p>
+<p>SheetSpeed is a Chrome extension that adds keyboard shortcuts, formula tracing and modeling tools to Google Sheets and Google Slides. <strong>SheetSpeed Core</strong> (free) works entirely inside the open document. <strong>SheetSpeed Pro</strong> (free for everyone during early access; paid plans later) adds tools that read and write your spreadsheet through the Google Sheets API, but only after you connect your Google account. We do not sell personal data, use it for advertising, or use it to train AI models.</p>
+<p><strong>Early access:</strong> while Pro is in early access, SheetSpeed collects no license, account or payment data and does not contact ExtensionPay or Stripe. The sections below that mention ExtensionPay, Stripe, licenses or trials apply only once billing opens, and we will give notice in the extension and on our website before then.</p>
 
 <h2>Data SheetSpeed accesses</h2>
 <ul>
@@ -78,7 +79,7 @@
   <li><strong>Keyboard events.</strong> SheetSpeed checks key presses against your configured shortcuts. It does not log ordinary typing or cell contents. Local diagnostics may keep the latest modifier event and element/menu metadata on your device.</li>
   <li><strong>Spreadsheet data (Pro, after you connect).</strong> When you run a Pro tool (trace dependents, goal seek, what-if tables, freeze panes, auto-color, color cycles, image export), SheetSpeed calls the Google Sheets API for <em>the spreadsheet you are working in</em> to read the cells, formulas and formatting that tool needs, and, for tools that change the sheet, to write the result you confirm.</li>
   <li><strong>Slides images (Pro, only when you use Refresh from Sheets).</strong> When you press <kbd>Ctrl+Alt+Shift+R</kbd> (or click “Refresh from Sheets”) on a Google Slides slide, SheetSpeed reads that slide to find images previously exported by SheetSpeed (identified by the source spreadsheet link stored in the image’s link and alt text), re-reads that source range through the Google Sheets API, renders a new PNG in your browser, and replaces the image in place. It only touches the slide and presentation you are editing.</li>
-  <li><strong>Account and license (Pro).</strong> Your email address and plan status (trial start, paid or not) through ExtensionPay.</li>
+  <li><strong>Account and license (Pro, once billing opens; not collected during early access).</strong> Your email address and plan status (trial start, paid or not) through ExtensionPay.</li>
 </ul>
 
 <h2>Google account connection (Pro)</h2>
@@ -97,7 +98,7 @@
 <h2>Refreshing Sheets images in Slides (Pro)</h2>
 <ul>
   <li>Google Slides can only replace an image from a web address, so for each image being refreshed SheetSpeed uploads the new PNG to your own Google Drive as a temporary file (“SheetSpeed refresh (temporary).png”) and gives it a temporary “anyone with the link can view” share with discovery turned off, so it cannot be found by search.</li>
-  <li>The link is used only by Google Slides to fetch the image. Immediately afterwards, whether the update succeeded or failed, SheetSpeed removes the link share and deletes the temporary file. No SheetSpeed file stays in your Drive. If removal ever fails, SheetSpeed tells you so you can delete the file yourself.</li>
+  <li>The link is used only by Google Slides to fetch the image. Immediately afterwards, whether the update succeeded or failed, SheetSpeed removes the link share and deletes the temporary file. No SheetSpeed file stays in your Drive. If removal ever fails, SheetSpeed tells you so you can delete the file yourself. If an upload succeeded but its confirmation was lost, the next refresh finds that leftover temporary file (by its name or a SheetSpeed tag; <code>drive.file</code> only shows files SheetSpeed created) and deletes it.</li>
   <li>The image contains only the cells of the original exported range. The refreshed image keeps its size and position, and its link and alt text record the source spreadsheet, tab and range so it can be refreshed again. Nothing else is stored, and nothing is sent to a SheetSpeed server.</li>
 </ul>
 
@@ -105,14 +106,14 @@
 <ul>
   <li>Shortcut settings, enabled state and timeouts are stored in Chrome local storage on your device. If you turn on settings sync, they are also stored in Chrome sync storage under your Chrome profile.</li>
   <li>When a Pro tool changes your sheet, SheetSpeed keeps a local undo record (the original values and formatting of the affected cells) on your device so you can reverse the change. Undo records are bounded in size and you can clear them in Settings.</li>
-  <li>The cached license status (paid / trial / none) is stored locally. ExtensionPay keeps a login token in Chrome storage.</li>
+  <li>Once billing opens, the cached license status (paid / trial / none) is stored locally. ExtensionPay keeps a login token in Chrome storage.</li>
 </ul>
 
 <h2>Transmission and processors</h2>
 <ul>
   <li><strong>Google (Pro only):</strong> Sheets API requests go directly from your browser to <code>sheets.googleapis.com</code>. Slides refresh requests go directly to <code>slides.googleapis.com</code> and the Google Drive API at <code>www.googleapis.com/drive/v3</code> and <code>www.googleapis.com/upload/drive/v3</code>.</li>
-  <li><strong>ExtensionPay</strong> (<a href="https://extensionpay.com/privacy">privacy</a>): license and login checks. Your email and plan status are sent, but never your spreadsheet data.</li>
-  <li><strong>Stripe</strong> (<a href="https://stripe.com/privacy">privacy</a>): payment processing, receipts and the subscription portal. Card numbers never reach SheetSpeed or ExtensionPay.</li>
+  <li><strong>ExtensionPay</strong> (<a href="https://extensionpay.com/privacy">privacy</a>, once billing opens; not contacted during early access): license and login checks. Your email and plan status are sent, but never your spreadsheet data.</li>
+  <li><strong>Stripe</strong> (<a href="https://stripe.com/privacy">privacy</a>, once billing opens): payment processing, receipts and the subscription portal. Card numbers never reach SheetSpeed or ExtensionPay.</li>
   <li><strong>Developer servers:</strong> none. <strong>AI providers:</strong> none. The Chrome Web Store version does not include an AI helper.</li>
 </ul>
 
@@ -122,8 +123,8 @@
   <li><code>activeTab</code>: interact with the Google document you are using when you invoke SheetSpeed.</li>
   <li><code>identity</code>: get a Google access token, with your consent, for the Pro tools.</li>
   <li>Host permission <code>https://sheets.googleapis.com/*</code>: call the Google Sheets API for Pro tools.</li>
-  <li>Host permissions <code>https://slides.googleapis.com/*</code>, <code>https://www.googleapis.com/drive/v3/*</code> and <code>https://www.googleapis.com/upload/drive/v3/*</code>: Slides refresh only (read the slide, replace the image, and upload, share, unshare and delete the temporary image file).</li>
-  <li>Content scripts on Google Sheets/Slides document pages (shortcuts and panel) and on <code>extensionpay.com</code> (license sign-in and payment confirmation).</li>
+  <li>Host permissions <code>https://slides.googleapis.com/*</code>, <code>https://www.googleapis.com/drive/v3/*</code> and <code>https://www.googleapis.com/upload/drive/v3/*</code>: Slides refresh only (read the slide, replace the image, and upload, share, unshare, find and delete the temporary image file).</li>
+  <li>Content scripts on Google Sheets/Slides document pages (shortcuts and panel) and on <code>extensionpay.com</code> (license sign-in and payment confirmation once billing opens; inactive during early access, and it never runs on other sites).</li>
 </ul>
 
 <h2>Retention and your rights</h2>
